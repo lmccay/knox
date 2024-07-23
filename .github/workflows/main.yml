@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'temurin'
+          distribution: 'oracle'
           cache: maven
       - name: 'Build and Test'
         run: mvn -T 2C clean verify -U -Dsurefire.useFile=false -Dshellcheck=true -Djavax.net.ssl.trustStorePassword=changeit -Dhttp.keepAlive=false -B -V
