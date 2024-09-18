@@ -110,6 +110,7 @@
         <module>gateway-service-hbase</module>
         <module>gateway-service-hive</module>
         <module>gateway-service-impala</module>
+        <module>gateway-service-knoxai</module>
         <module>gateway-service-knoxsso</module>
         <module>gateway-service-knoxssout</module>
         <module>gateway-service-knoxtoken</module>
@@ -1088,6 +1089,11 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.knox</groupId>
+                <artifactId>gateway-service-knoxai</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.knox</groupId>
                 <artifactId>gateway-service-knoxssout</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -1391,6 +1397,12 @@
                 <groupId>com.nimbusds</groupId>
                 <artifactId>lang-tag</artifactId>
                 <version>${lang-tag.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20240205</version>
             </dependency>
 
             <dependency>
