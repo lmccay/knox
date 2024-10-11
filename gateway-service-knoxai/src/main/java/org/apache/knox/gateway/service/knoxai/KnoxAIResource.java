@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -66,20 +67,22 @@ public class KnoxAIResource {
   public static final String DEFAULT_MODEL_ENDPOINT_URL = "https://api.openai.com/v1/chat/completions";
   public static final String MODEL_NAME = "model.name";
   private static final String DEFAULT_MODEL_NAME = "gpt-4-turbo-preview";
+  private static final String PROMPT_DIR = "prompt.dir";
+  private static final String DEFAULT_PROMPT_DIR = "/Users/lmccay/prompts";
+  private static final String ALLOW_UNCURATED_PROMPTS = "allow.uncurated.prompts";
 
   @Context
   HttpServletRequest request;
-
   @Context
   HttpServletResponse response;
-
   @Context
   ServletContext context;
 
   private char[] apiKey = null;
   private String modelEndpointUrl = null;
-
   private String modelName = null;
+  private String promptDir = null;
+  private boolean allowUncuratedPrompts = false;
 
   @PostConstruct
   public void init() {
@@ -99,46 +102,54 @@ public class KnoxAIResource {
     if (modelName == null) {
       modelName = DEFAULT_MODEL_NAME;
     }
+
+    promptDir = context.getInitParameter(PROMPT_DIR);
+    if (promptDir == null) {
+      promptDir = DEFAULT_PROMPT_DIR;
+    }
+
+    allowUncuratedPrompts = Boolean.parseBoolean(context.getInitParameter(ALLOW_UNCURATED_PROMPTS));
   }
 
   @POST
-  @Produces({APPLICATION_JSON, APPLICATION_XML})
-  public Response interact(@QueryParam("pattern") String pattern, @QueryParam("input") String input) {
-    String responseContent = do_openai(pattern, input);
-    if (responseContent != null) {
-      return ok().entity("{ \"content\" : " + responseContent + " }").build();
-    } else {
-      return ok().entity("{ \"content\" : none }").build();
-    }
+  @Produces({APPLICATION_JSON})
+  @Consumes({APPLICATION_JSON})
+  public Response interact(String requestBody) {
+    String responseContent = do_openai(requestBody);
+      return ok().entity(responseContent).build();
   }
 
-  private String do_openai(String pattern, String input) {
+  private String do_openai(String requestBody) {
     String responseContent = null;
     OkHttpClient client = new OkHttpClient();
     client.setConnectTimeout(60000, TimeUnit.MILLISECONDS);
     client.setReadTimeout(1000, TimeUnit.SECONDS);
 
-    // Replace with the path to the file containing system instructions
-    //File systemInstructionsFile = new File("path/to/system_instructions.txt");
-    String patternURL = "https://raw.githubusercontent.com/danielmiessler/fabric/main/patterns/" + pattern + "/system.md";
+    ParsedRequest pr = new ParsedRequest(requestBody);
+
+    String patternURL = getPromptDir() + pr.getPrompt() + "/system.md";
     System.out.println(patternURL);
-    System.out.println(input);
+    System.out.println(pr.getInput());
 
     // Replace with the path to the file containing user input or prompt
     String inputContent = null;
+    String responseBody = null;
     try {
-      inputContent = getInputContent(input);
+      int words = pr.getPrompt().split("\\s").length;
+      if (words > 1 && !allowUncuratedPrompts) {
+        response.sendError(400, "Uncurated Prompts are not Allowed");
+      }
+
+      inputContent = getInputContent(pr.getInput());
       String prompt = "You are a generally useful agent hoping to be of help.";
-      if (pattern != null) {
+      if (pr.getPrompt() != null) {
         prompt = getInputContent(patternURL);
       }
 
       String bodyString = "{\"model\": \"" + modelName + "\""
               + ", \"messages\": [{\"role\": \"system\", \"content\": \"" + prompt + "\"},"
               + "{\"role\": \"user\", \"content\": \"" + inputContent + "\"}]}";
-      //System.out.println(bodyString);
 
-      //JSONObject json = new JSONObject(bodyString);
       RequestBody body = RequestBody.create(MediaType.parse("application/json"), bodyString);
 
       Request request = new Request.Builder()
@@ -151,27 +162,21 @@ public class KnoxAIResource {
       com.squareup.okhttp.Response resp = client.newCall(request).execute();
 
       if (resp.isSuccessful()) {
-          String responseBody = resp.body().string();
-          JSONObject jsonResponse = new JSONObject(responseBody);
-        JSONArray choices = jsonResponse.getJSONArray("choices");
-
-        for (int i = 0; i < choices.length(); i++) {
-          JSONObject choice = choices.getJSONObject(i);
-          JSONObject message = choice.getJSONObject("message");
-          System.out.println(message.getString("content"));
-          responseContent = message.getString("content");
-        }
+          responseBody = resp.body().string();
       } else {
         System.out.println("Error: " + resp.code() + " - " + resp.body().string());
         System.out.println(request);
         System.out.println(body.contentType());
       }
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       throw new RuntimeException(e);
     }
 
-    return responseContent;
+    return responseBody;
+  }
+
+  private String getPromptDir() {
+    return (promptDir.endsWith("/")) ? promptDir : promptDir + "/";
   }
 
   private String getInputContent(String urlString) throws IOException {
@@ -218,4 +223,34 @@ public class KnoxAIResource {
     return (String) context.getAttribute("org.apache.knox.gateway.gateway.cluster");
   }
 
+  private class ParsedRequest {
+    private String prompt;
+    private String input;
+
+    public ParsedRequest(String requestBody) {
+      // Parse the request body using org.json
+      JSONObject jsonRequest = new JSONObject(requestBody);
+
+      // Extract system prompt and user message
+      String systemPrompt = null;
+      String userMessage = null;
+      JSONArray messages = jsonRequest.getJSONArray("messages");
+      for (int i = 0; i < messages.length(); i++) {
+        JSONObject message = messages.getJSONObject(i);
+        String role = message.getString("role");
+        if ("system".equals(role)) {
+          prompt = message.getString("content");
+        } else if ("user".equals(role)) {
+          input = message.getString("content");
+        }
+      }
+    }
+    public String getPrompt() {
+      return prompt;
+    }
+
+    public String getInput() {
+      return input;
+    }
+  }
 }
