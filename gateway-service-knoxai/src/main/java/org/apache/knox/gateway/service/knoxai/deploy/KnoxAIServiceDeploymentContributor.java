@@ -38,7 +38,7 @@ public class KnoxAIServiceDeploymentContributor extends JerseyServiceDeploymentC
 
   @Override
   protected String[] getPatterns() {
-    return new String[]{ "knoxai/api/**?**" };
+    return new String[]{ "/knoxai/api/**?**", "/**/api/v1/chat/completions" };
   }
 
 }

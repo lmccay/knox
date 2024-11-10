@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class Urls {
 
   public static String ensureLeadingSlash( String s ) {
@@ -177,4 +179,23 @@ public class Urls {
     return s.toString();
   }
 
+  public static String getServiceNameFromKnoxURLWithGatewayPath(String urlString, String gatewayPath) throws Exception {
+    URL url = new URL(urlString);
+    String path = url.getPath();
+
+    // Remove leading slash if present
+    if (path.startsWith("/")) {
+      path = path.substring(1);
+    }
+
+    // Split the path into parts
+    String[] parts = path.split("/");
+
+    // Check if the first part matches and there's a second part
+    if (parts.length > 1 && parts[0].equals(gatewayPath)) {
+      return parts[1];
+    }
+
+    return null; // Return null if the pattern doesn't match
+  }
 }
