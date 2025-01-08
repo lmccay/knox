@@ -21,12 +21,14 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
+import org.apache.knox.gateway.config.GatewayConfig;
 import org.apache.knox.gateway.i18n.messages.MessagesFactory;
 
 import org.apache.knox.gateway.services.GatewayServices;
 import org.apache.knox.gateway.services.ServiceType;
 import org.apache.knox.gateway.services.security.AliasService;
 import org.apache.knox.gateway.services.security.AliasServiceException;
+import org.apache.knox.gateway.util.Urls;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,26 +48,28 @@ import static javax.ws.rs.core.Response.ok;
 
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Path( KnoxAIResource.RESOURCE_PATH )
 public class KnoxAIResource {
   private static final KnoxAIMessages log = MessagesFactory.get( KnoxAIMessages.class );
 
-  private static final String DEFAULT_KEY_ALIAS = "openai.api.key";
+  private static final String API_KEY_ALIAS = "api.key.alias";
+  private static final String DEFAULT_KEY_ALIAS = "openai.api.key.alias";
   static final String RESOURCE_PATH = "/{serviceName:.*}/api/v1/chat/completions";
   public static final String MODEL_ENDPOINT_URL = "model.endpoint.url";
-  public static final String DEFAULT_MODEL_ENDPOINT_URL = "https://api.openai.com/v1/chat/completions";
   public static final String MODEL_NAME = "model.name";
   private static final String DEFAULT_MODEL_NAME = "gpt-4-turbo-preview";
   private static final String PROMPT_DIR = "prompt.dir";
-  private static final String DEFAULT_PROMPT_DIR = "/Users/lmccay/prompts";
   private static final String ALLOW_UNCURATED_PROMPTS = "allow.uncurated.prompts";
 
   @Context
@@ -75,37 +79,20 @@ public class KnoxAIResource {
   @Context
   ServletContext context;
 
-  private char[] apiKey = null;
-  private String modelEndpointUrl = null;
-  private String modelName = null;
-  private String promptDir = null;
-  private boolean allowUncuratedPrompts = false;
+  private Map<String, String> params = new HashMap<>();
+  private AliasService as = null;
 
   @PostConstruct
   public void init() {
     GatewayServices services = (GatewayServices) context.getAttribute(GatewayServices.GATEWAY_SERVICES_ATTRIBUTE);
-    AliasService as = services.getService(ServiceType.ALIAS_SERVICE);
-    try {
-        apiKey = as.getPasswordFromAliasForCluster(getTopologyName(), DEFAULT_KEY_ALIAS);
-    } catch (AliasServiceException e) {
-        throw new RuntimeException(e);
-    }
-    modelEndpointUrl = context.getInitParameter(MODEL_ENDPOINT_URL);
-    if (modelEndpointUrl == null) {
-      modelEndpointUrl = DEFAULT_MODEL_ENDPOINT_URL;
-    }
+    as = services.getService(ServiceType.ALIAS_SERVICE);
 
-    modelName = context.getInitParameter(MODEL_NAME);
-    if (modelName == null) {
-      modelName = DEFAULT_MODEL_NAME;
+    Enumeration<String> enumeration = context.getInitParameterNames();
+    String paramName = null;
+    while (enumeration.hasMoreElements()) {
+      paramName = enumeration.nextElement();
+      params.put(paramName, context.getInitParameter(paramName));
     }
-
-    promptDir = context.getInitParameter(PROMPT_DIR);
-    if (promptDir == null) {
-      promptDir = DEFAULT_PROMPT_DIR;
-    }
-
-    allowUncuratedPrompts = Boolean.parseBoolean(context.getInitParameter(ALLOW_UNCURATED_PROMPTS));
   }
 
   @POST
@@ -128,12 +115,18 @@ public class KnoxAIResource {
     System.out.println(patternURL);
     System.out.println(pr.getInput());
 
-    // Replace with the path to the file containing user input or prompt
     String inputContent = null;
     String responseBody = null;
+    String modelName = getModelName();
+    char[] apiKey = null;
+    try {
+        apiKey = as.getPasswordFromAliasForCluster(getTopologyName(), params.get(modelName + "." + API_KEY_ALIAS));
+    } catch (AliasServiceException e) {
+        throw new RuntimeException(e);
+    }
     try {
       int words = pr.getPrompt().split("\\s").length;
-      if (words > 1 && !allowUncuratedPrompts) {
+      if (words > 1 && !"true".equalsIgnoreCase(params.get(modelName + "." + ALLOW_UNCURATED_PROMPTS))) {
         response.sendError(400, "Uncurated Prompts are not Allowed");
       }
 
@@ -143,14 +136,15 @@ public class KnoxAIResource {
         prompt = getInputContent(patternURL);
       }
 
-      String bodyString = "{\"model\": \"" + modelName + "\""
+      String model = params.get(modelName + "." + MODEL_NAME);
+      String bodyString = "{\"model\": \"" + model + "\""
               + ", \"messages\": [{\"role\": \"system\", \"content\": \"" + prompt + "\"},"
               + "{\"role\": \"user\", \"content\": \"" + inputContent + "\"}]}";
 
       RequestBody body = RequestBody.create(MediaType.parse("application/json"), bodyString);
 
       Request request = new Request.Builder()
-              .url(modelEndpointUrl)
+              .url(params.get(modelName + "." + MODEL_ENDPOINT_URL))
               .addHeader("Authorization", "Bearer " + new String(apiKey))
               .addHeader("Content-Type", "application/json")
               .post(body)
@@ -173,7 +167,20 @@ public class KnoxAIResource {
   }
 
   private String getPromptDir() {
+    String modelName = getModelName();
+    String promptDir = params.get(modelName + "." + PROMPT_DIR);
     return (promptDir.endsWith("/")) ? promptDir : promptDir + "/";
+  }
+
+  private String getModelName() {
+      try {
+          return Urls.getServiceNameFromKnoxURLWithGatewayPath(
+                request.getRequestURL().toString(), ((GatewayConfig)context.getAttribute(
+                        GatewayConfig.GATEWAY_CONFIG_ATTRIBUTE)).getGatewayPath());
+      } catch (MalformedURLException e) {
+        // this shouldn't happen given that we are getting the url from the request
+          throw new RuntimeException(e);
+      }
   }
 
   private String getInputContent(String urlString) throws IOException {

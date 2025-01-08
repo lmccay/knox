@@ -101,4 +101,10 @@ public class UrlsTest {
     assertTrue(Urls.containsUserInfo( "https://www.local.com:8443aa@google.com"));
     assertFalse(Urls.containsUserInfo( "https://www.local.com:8443/google.com"));
   }
+
+  @Test
+  public void testServiceNameFromKnoxURLWithGatewayPath() throws Exception {
+    assertEquals("knoxai", Urls.getServiceNameFromKnoxURLWithGatewayPath(
+            "https://localhost:8443/gateway/knoxai/api/v1/chat/completions","gateway"));
+  }
 }

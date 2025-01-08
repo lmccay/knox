@@ -179,7 +179,7 @@ public class Urls {
     return s.toString();
   }
 
-  public static String getServiceNameFromKnoxURLWithGatewayPath(String urlString, String gatewayPath) throws Exception {
+  public static String getServiceNameFromKnoxURLWithGatewayPath(String urlString, String gatewayPath) throws MalformedURLException {
     URL url = new URL(urlString);
     String path = url.getPath();
 
@@ -192,8 +192,8 @@ public class Urls {
     String[] parts = path.split("/");
 
     // Check if the first part matches and there's a second part
-    if (parts.length > 1 && parts[0].equals(gatewayPath)) {
-      return parts[1];
+    if (parts.length > 2 && parts[0].equals(gatewayPath)) {
+      return parts[2];
     }
 
     return null; // Return null if the pattern doesn't match
