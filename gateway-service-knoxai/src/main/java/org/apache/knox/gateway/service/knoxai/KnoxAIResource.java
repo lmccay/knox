@@ -193,17 +193,69 @@ public class KnoxAIResource {
     if (urlString.startsWith("http://") || urlString.startsWith("https://")) {
       url = new URL(urlString);
       connection = (HttpURLConnection) url.openConnection();
-      return readToString(connection);
+      return escapePrompt(readToString(connection));
     } else if (urlString.startsWith("file:///")) {
       url = new URL(urlString);
       connection = url.openConnection();
-      return readToString(connection);
+      return escapePrompt(readToString(connection));
     } else {
       return urlString.replaceAll("\r\n", " ");
     }
   }
 
-  private static String readToString(URLConnection connection) throws IOException {
+  public static String escapePrompt(String prompt) {
+    StringBuilder escaped = new StringBuilder();
+    boolean inCodeBlock = false;
+    String[] lines = prompt.split("\n", -1);  // -1 to keep empty lines
+
+    for (int i = 0; i < lines.length; i++) {
+      String line = lines[i];
+      if (line.trim().startsWith("```")) {
+              inCodeBlock = !inCodeBlock;
+      escaped.append(escapeJsonString(line)).append("\\n");
+    } else if (inCodeBlock) {
+      // For code blocks, escape only what's necessary for JSON
+      escaped.append(escapeCodeBlock(line))
+              .append(i < lines.length - 1 ? "\\n" : "");
+    } else {
+      escaped.append(escapeJsonString(line))
+              .append(i < lines.length - 1 ? "\\n" : "");
+    }
+  }
+
+    return escaped.toString();
+}
+
+private static String escapeCodeBlock(String input) {
+  return input.replace("\\", "\\\\")  // Escape backslashes first
+          .replace("\"", "\\\""); // Then escape double quotes
+}
+
+private static String escapeJsonString(String input) {
+  StringBuilder result = new StringBuilder();
+  for (char c : input.toCharArray()) {
+    switch (c) {
+      case '"': result.append("\\\""); break;
+      case '\\': result.append("\\\\"); break;
+      case '\b': result.append("\\b"); break;
+      case '\f': result.append("\\f"); break;
+      case '\n': result.append("\\n"); break;
+      case '\r': result.append("\\r"); break;
+      case '\t': result.append("\\t"); break;
+      default:
+        if (c < ' ') {
+          String t = "000" + Integer.toHexString(c);
+          result.append("\\u").append(t.substring(t.length() - 4));
+        } else {
+          result.append(c);
+        }
+    }
+  }
+  return result.toString();
+}
+
+
+private static String readToString(URLConnection connection) throws IOException {
 
     // Initialize a StringBuilder to hold the response
     StringBuilder response = new StringBuilder();
