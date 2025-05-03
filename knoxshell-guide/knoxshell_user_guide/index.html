@@ -29,10 +29,10 @@
         <link rel="canonical" href="https://knox.apache.org/knoxshell-guide/knoxshell_user_guide/">
       
       
-        <link rel="prev" href="../../knox_cli/">
+        <link rel="prev" href="../../quick_start/">
       
       
-        <link rel="next" href="../../admin_api/">
+        <link rel="next" href="../../knox_cli/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -268,17 +268,19 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../book/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
     
   
-  User Guide
+  Client/User Guide
 
         </a>
       </li>
@@ -294,35 +296,13 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../config/" class="md-tabs__link">
+        <a href="../../book_gateway-details/" class="md-tabs__link">
           
   
   
     
   
-  Configuration
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../service_config/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Services
+  Admin Guide
 
         </a>
       </li>
@@ -345,52 +325,6 @@
     
   
   Developer Guide
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-    
-  
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../knox_cli/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Tools
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../sse-support/" class="md-tabs__link">
-          
-  
-  
-    
-  
-  Advanced Topics
 
         </a>
       </li>
@@ -498,20 +432,12 @@
       
   
   
+    
   
   
+  
     
     
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
       
         
       
@@ -527,26 +453,27 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
-    User Guide
+    Client/User Guide
     
   </span>
   
@@ -554,10 +481,10 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            User Guide
+            Client/User Guide
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -565,20 +492,404 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../book/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Knox Shell
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Overview
+    Knox Shell
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#representing-and-working-with-tabular-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Representing and Working with Tabular Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#knoxshelltable" class="md-nav__link">
+    <span class="md-ellipsis">
+      KnoxShellTable
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="KnoxShellTable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#builders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Builders
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Builders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jdbc" class="md-nav__link">
+    <span class="md-ellipsis">
+      JDBC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csv" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSV
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistence-and-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persistence and Publishing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Persistence and Publishing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#json_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csv_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usecases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usecases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jdbc-resultset-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      JDBC Resultset Representations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csv-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSV Representations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-table-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Table Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General Table Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sorting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selecting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selecting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fluent-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fluent API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregating" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregating
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#knoxline-sql-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      KnoxLine SQL Shell
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-groovysh-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom GroovySh Commands
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom GroovySh Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#knoxshell-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      KnoxShell Commands:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-covid19-data-flow-into-datalake" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXAMPLE: COVID19 Data Flow into DataLake
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EXAMPLE: COVID19 Data Flow into DataLake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-table-from-public-csv-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build Table from Public CSV File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select-columns-filter-and-sort-by-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      Select Columns, Filter and Sort by Column
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-calculations-on-columns-of-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregate Calculations on Columns of Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persist-tables-to-local-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persist Tables to Local Disk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-tables-to-datalake" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Tables to DataLake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-knoxshell-truststore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building KnoxShell Truststore
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mount-a-webhdfs-filesystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mount a WebHDFS Filesystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-a-filesystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing a Filesystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put-tables-into-datalake" class="md-nav__link">
+    <span class="md-ellipsis">
+      Put Tables into DataLake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pull-csv-files-from-webhdfs-and-create-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pull CSV Files from WebHDFS and Create Tables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -591,35 +902,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../book_getting-started/" class="md-nav__link">
+      <a href="../../knox_cli/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Getting Started
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../book_gateway-details/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Gateway Details
+    Knox CLI
     
   </span>
   
@@ -642,7 +930,7 @@
   
   
   <span class="md-ellipsis">
-    Client Details
+    Discovering Resources
     
   </span>
   
@@ -659,114 +947,53 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../book_service-details/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Service Details
     
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../book_ui_service_details/" class="md-nav__link">
-        
   
   
   <span class="md-ellipsis">
-    UI Service Details
+    Troubleshooting
     
   </span>
   
 
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../book_knox-samples/" class="md-nav__link">
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
-  
-  
-  <span class="md-ellipsis">
-    Knox Samples
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../book_topology_port_mapping/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Topology Port Mapping
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../book_limitations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Limitations
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Troubleshooting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -780,7 +1007,61 @@
   
   
   <span class="md-ellipsis">
-    Troubleshooting
+    General Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client_troubleshooting.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Client-Specific Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
     
   </span>
   
@@ -817,6 +1098,86 @@
       
         
       
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Admin Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Admin Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../book_gateway-details/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Gateway Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -844,10 +1205,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
             
   
   
@@ -860,8 +1221,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             Configuration
           </label>
@@ -940,10 +1301,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2_2" id="__nav_4_2_2_label" tabindex="0">
             
   
   
@@ -956,8 +1317,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_2">
             <span class="md-nav__icon md-icon"></span>
             Authentication
           </label>
@@ -1483,9 +1844,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
@@ -1542,15 +1904,15 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
-    Services
+    Service-Specific Configurations
     
   </span>
   
@@ -1558,10 +1920,10 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
-            Services
+            Service-Specific Configurations
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1962,17 +2324,16 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
   
     
     
-      
-        
       
         
       
@@ -1995,15 +2356,15 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
-    Developer Guide
+    Maintenance and Monitoring
     
   </span>
   
@@ -2011,10 +2372,10 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
-            Developer Guide
+            Maintenance and Monitoring
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2025,30 +2386,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev-guide/book/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Overview
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dev-guide/admin-ui/" class="md-nav__link">
+      <a href="../../admin_ui/" class="md-nav__link">
         
   
   
@@ -2094,12 +2432,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev-guide/knoxsso_integration/" class="md-nav__link">
+      <a href="../../metrics_logs.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    KnoxSSO Integration
+    Metrics and Logs
     
   </span>
   
@@ -2116,21 +2454,16 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
+  
+  
   
   
     
-  
-  
-  
     
-    
-      
-        
-      
-        
       
         
       
@@ -2142,27 +2475,26 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
-    Tools
+    Troubleshooting
     
   </span>
   
@@ -2170,10 +2502,10 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
-            Tools
+            Troubleshooting
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2184,12 +2516,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../knox_cli/" class="md-nav__link">
+      <a href="../../admin_troubleshooting.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Knox CLI
+    General Troubleshooting
     
   </span>
   
@@ -2204,408 +2536,321 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Knox Shell
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../auth_troubleshooting.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Knox Shell
+    Authentication Issues
     
   </span>
   
 
       </a>
-      
-        
+    </li>
+  
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+              
+            
+              
+                
   
   
   
+  
+    <li class="md-nav__item">
+      <a href="../../service_troubleshooting.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service-Specific Issues
     
+  </span>
   
+
+      </a>
+    </li>
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    <span class="md-ellipsis">
-      Introduction
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#representing-and-working-with-tabular-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      Representing and Working with Tabular Data
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#knoxshelltable" class="md-nav__link">
-    <span class="md-ellipsis">
-      KnoxShellTable
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="KnoxShellTable">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#builders" class="md-nav__link">
-    <span class="md-ellipsis">
-      Builders
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Builders">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#jdbc" class="md-nav__link">
-    <span class="md-ellipsis">
-      JDBC
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#csv" class="md-nav__link">
-    <span class="md-ellipsis">
-      CSV
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#join" class="md-nav__link">
-    <span class="md-ellipsis">
-      Join
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#json" class="md-nav__link">
-    <span class="md-ellipsis">
-      JSON
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persistence-and-publishing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Persistence and Publishing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Persistence and Publishing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#json_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      JSON
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#csv_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      CSV
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usecases" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usecases
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jdbc-resultset-representations" class="md-nav__link">
-    <span class="md-ellipsis">
-      JDBC Resultset Representations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#csv-representations" class="md-nav__link">
-    <span class="md-ellipsis">
-      CSV Representations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#general-table-operations" class="md-nav__link">
-    <span class="md-ellipsis">
-      General Table Operations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="General Table Operations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sorting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sorting
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#selecting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Selecting
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#filtering" class="md-nav__link">
-    <span class="md-ellipsis">
-      Filtering
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fluent-api" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fluent API
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aggregating" class="md-nav__link">
-    <span class="md-ellipsis">
-      Aggregating
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#knoxline-sql-shell" class="md-nav__link">
-    <span class="md-ellipsis">
-      KnoxLine SQL Shell
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#custom-groovysh-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      Custom GroovySh Commands
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Custom GroovySh Commands">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#knoxshell-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      KnoxShell Commands:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-covid19-data-flow-into-datalake" class="md-nav__link">
-    <span class="md-ellipsis">
-      EXAMPLE: COVID19 Data Flow into DataLake
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="EXAMPLE: COVID19 Data Flow into DataLake">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#build-table-from-public-csv-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Build Table from Public CSV File
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#select-columns-filter-and-sort-by-column" class="md-nav__link">
-    <span class="md-ellipsis">
-      Select Columns, Filter and Sort by Column
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aggregate-calculations-on-columns-of-table" class="md-nav__link">
-    <span class="md-ellipsis">
-      Aggregate Calculations on Columns of Table
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persist-tables-to-local-disk" class="md-nav__link">
-    <span class="md-ellipsis">
-      Persist Tables to Local Disk
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#add-tables-to-datalake" class="md-nav__link">
-    <span class="md-ellipsis">
-      Add Tables to DataLake
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#building-knoxshell-truststore" class="md-nav__link">
-    <span class="md-ellipsis">
-      Building KnoxShell Truststore
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mount-a-webhdfs-filesystem" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mount a WebHDFS Filesystem
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#accessing-a-filesystem" class="md-nav__link">
-    <span class="md-ellipsis">
-      Accessing a Filesystem
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#put-tables-into-datalake" class="md-nav__link">
-    <span class="md-ellipsis">
-      Put Tables into DataLake
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pull-csv-files-from-webhdfs-and-create-tables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pull CSV Files from WebHDFS and Create Tables
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev-guide/book/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Extending Knox
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Extending Knox
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extending_knox.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev-guide/knoxsso_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KnoxSSO Integration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev-guide/custom_authn.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Custom Authentication
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -2637,35 +2882,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../admin_ui/" class="md-nav__link">
+      <a href="../../dev-guide/knox_monitoring_api/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Admin UI
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../webshell/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Web Shell
+    Monitoring API
     
   </span>
   
@@ -2682,9 +2904,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
@@ -2713,10 +2936,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_4" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
             
   
   
@@ -2729,8 +2952,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
             <span class="md-nav__icon md-icon"></span>
             Advanced Topics
           </label>
@@ -2800,6 +3023,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
