@@ -3338,8 +3338,6 @@
 
 
 
-  <h1>Knox Token</h1>
-
 <!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -3939,7 +3937,7 @@ When such a token is created by Knox, we should save the following metadata too:
 </tbody>
 </table>
 <p>You may want to check out <a href="https://github.com/apache/knox/pull/542">GitHub Pull Request #542</a> for sample <code>curl</code> commands.</p>
-<h2 id="apikey-extension-of-knoxtoken-api">APIKey Extension of KnoxToken API<a class="headerlink" href="#apikey-extension-of-knoxtoken-api" title="Permanent link">&para;</a></h2>
+<h1 id="apikey-extension-of-knoxtoken-api">APIKey Extension of KnoxToken API<a class="headerlink" href="#apikey-extension-of-knoxtoken-api" title="Permanent link">&para;</a></h1>
 <h3 id="introduction_1">Introduction<a class="headerlink" href="#introduction_1" title="Permanent link">&para;</a></h3>
 <p>The APIKEY API is an extension of the KnoxToken API that defaults certain configuration and translates the responses in
 a way that supports the specific API Key use cases. This API is used to issue API Keys for use with services like AI 
@@ -3977,7 +3975,7 @@ $ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/s
 <p>Note that in both of the above response that there is a key_id as well as the api_key. The api_key is intended to be used
 as the API Key via Authorization Bearer Token in the invocations of APIs.</p>
 <p>The key_id may be used in management operations of the API Key lifecycle by those with appropriate permissions to do so.</p>
-<h2 id="clientid-extension-of-knoxtoken-api">CLIENTID Extension of KnoxToken API<a class="headerlink" href="#clientid-extension-of-knoxtoken-api" title="Permanent link">&para;</a></h2>
+<h1 id="clientid-extension-of-knoxtoken-api">CLIENTID Extension of KnoxToken API<a class="headerlink" href="#clientid-extension-of-knoxtoken-api" title="Permanent link">&para;</a></h1>
 <h3 id="introduction_2">Introduction<a class="headerlink" href="#introduction_2" title="Permanent link">&para;</a></h3>
 <p>The CLIENTID API is an extension of the KnoxToken API that defaults certain configuration and translates the responses in
 a way that supports the specific OAuth Client Credentials Flow use cases. This API is used to issue API Keys for use with
