@@ -3951,9 +3951,9 @@ the API Keys do not expire. It also differs in that the returned APIKeys are Pas
 server managed. Therefore, we default the server managed configuration to true for convenience and to reduce errors in
 deployment.</p>
 <p><strong>API Key</strong> - The example below shows the interaction with the APIKey API via curl and the response with default behavior.</p>
-<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
-        &lt;role&gt;APIKEY&lt;/role&gt;
-    &lt;/service&gt;&quot;
+<div class="highlight"><pre><span></span><code>&lt;service&gt;
+    &lt;role&gt;APIKEY&lt;/role&gt;
+&lt;/service&gt;
 </code></pre></div>
 <p>In this deployment example the TTL is -1 by default which means it never expires and is not included in the response.</p>
 <div class="highlight"><pre><span></span><code>$ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/apikey/api/v1/auth/key&quot;
@@ -3961,13 +3961,13 @@ deployment.</p>
 </code></pre></div>
 <p><strong>API Key</strong> - The example below shows the interaction with the APIKey API via curl and the response.</p>
 <p>In this deployment example the TTL is set to 74000 ms which is translated to seconds in the response.</p>
-<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
-        &lt;role&gt;APIKEY&lt;/role&gt;
-        &lt;param&gt;
-            &lt;name&gt;apikey.knox.token.ttl&lt;/name&gt;
-            &lt;value&gt;74000&lt;/value&gt;
-        &lt;/param&gt;
-    &lt;/service&gt;&quot;
+<div class="highlight"><pre><span></span><code>&lt;service&gt;
+    &lt;role&gt;APIKEY&lt;/role&gt;
+    &lt;param&gt;
+        &lt;name&gt;apikey.knox.token.ttl&lt;/name&gt;
+        &lt;value&gt;74000&lt;/value&gt;
+    &lt;/param&gt;
+&lt;/service&gt;
 
 $ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/apikey/api/v1/auth/key&quot;
 {&quot;key_id&quot;:&quot;9c2d22fb-e28d-4495-aaae-d4103dada8d1&quot;,&quot;api_key&quot;:&quot;T1dNeVpESXlabUl0WlRJNFpDMDBORGsxTFdGaFlX....R1F4OjpNMlV5WXpFeE56a3RZbVJtTXkwME1HTTJMVGxoTmpVdE9HWXdNbUZrTTJWa016UXo=&quot;,&quot;expires_in&quot;:74}
@@ -3988,9 +3988,9 @@ the API Keys do not expire. It also differs in that the returned APIKeys are Pas
 server managed. Therefore, we default the server managed configuration to true for convenience and to reduce errors in
 deployment.</p>
 <p><strong>Client Credentials</strong> - The example below shows the interaction with the APIKey API via curl and the response with default behavior.</p>
-<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
-        &lt;role&gt;CLIENTID&lt;/role&gt;
-    &lt;/service&gt;&quot;
+<div class="highlight"><pre><span></span><code>&lt;service&gt;
+    &lt;role&gt;CLIENTID&lt;/role&gt;
+&lt;/service&gt;
 </code></pre></div>
 <p>In this deployment example the TTL is -1 by default which means it never expires and is not included in the response.</p>
 <div class="highlight"><pre><span></span><code>$ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/clientid/api/v1/oauth/credentials&quot;
@@ -3998,13 +3998,13 @@ deployment.</p>
 </code></pre></div>
 <p><strong>Client Credentials</strong> - The example below shows the interaction with the APIKey API via curl and the response.</p>
 <p>In this deployment example the TTL is set to 74000 ms which is translated to seconds in the response.</p>
-<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
-        &lt;role&gt;CLIENTID&lt;/role&gt;
-        &lt;param&gt;
-            &lt;name&gt;clientid.knox.token.ttl&lt;/name&gt;
-            &lt;value&gt;74000&lt;/value&gt;
-        &lt;/param&gt;
-    &lt;/service&gt;&quot;
+<div class="highlight"><pre><span></span><code>&lt;service&gt;
+    &lt;role&gt;CLIENTID&lt;/role&gt;
+    &lt;param&gt;
+        &lt;name&gt;clientid.knox.token.ttl&lt;/name&gt;
+        &lt;value&gt;74000&lt;/value&gt;
+    &lt;/param&gt;
+&lt;/service&gt;
 
 $ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/clientid/api/v1/oauth/credentials&quot;
 {&quot;client_secret&quot;:&quot;WXpKaE1qRmlOR0V0TkRBMk5DMDBNelZsTFdFek16RXR....WTVaVFprOjpZelJsTlRJMFlXVXROMlEwTXkwME5EQTVMV0k1WWpJdFlqZ3pOR00xTmpsa01qUXg=&quot;,&quot;expires_in&quot;:74,&quot;client_id&quot;:&quot;c2a21b4a-4064-435e-a331-6d6858ef9e6d&quot;}
