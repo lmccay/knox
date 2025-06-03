@@ -1390,6 +1390,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#apikey-extension-of-knoxtoken-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      APIKey Extension of KnoxToken API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="APIKey Extension of KnoxToken API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientid-extension-of-knoxtoken-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      CLIENTID Extension of KnoxToken API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CLIENTID Extension of KnoxToken API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3226,6 +3274,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#apikey-extension-of-knoxtoken-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      APIKey Extension of KnoxToken API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="APIKey Extension of KnoxToken API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientid-extension-of-knoxtoken-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      CLIENTID Extension of KnoxToken API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CLIENTID Extension of KnoxToken API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3843,6 +3939,80 @@ When such a token is created by Knox, we should save the following metadata too:
 </tbody>
 </table>
 <p>You may want to check out <a href="https://github.com/apache/knox/pull/542">GitHub Pull Request #542</a> for sample <code>curl</code> commands.</p>
+<h2 id="apikey-extension-of-knoxtoken-api">APIKey Extension of KnoxToken API<a class="headerlink" href="#apikey-extension-of-knoxtoken-api" title="Permanent link">&para;</a></h2>
+<h3 id="introduction_1">Introduction<a class="headerlink" href="#introduction_1" title="Permanent link">&para;</a></h3>
+<p>The APIKEY API is an extension of the KnoxToken API that defaults certain configuration and translates the responses in
+a way that supports the specific API Key use cases. This API is used to issue API Keys for use with services like AI 
+Inferencing APIs such as OpenAI compatible APIs where an Authorization Bearer Token is expected and it is not a JWT with
+expectations around expiry and cryptographic verification of the credentials.</p>
+<p>The only difference from the KnoxToken API in the configuration are the parameter names. They must be prefixed with
+"apikey." this is done to disambiguate the config from that of KnoxToken itself when they are colocated in the same
+topology.</p>
+<p>In addition, the default behavior differs in that the time-to-live or TTL defaults to "-1" which means that by default
+the API Keys do not expire. It also differs in that the returned APIKeys are Passcode tokens and as such are by definition
+server managed. Therefore, we default the server managed configuration to true for convenience and to reduce errors in
+deployment.</p>
+<p><strong>API Key</strong> - The example below shows the interaction with the APIKey API via curl and the response with default behavior.</p>
+<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
+        &lt;role&gt;APIKEY&lt;/role&gt;
+    &lt;/service&gt;&quot;
+</code></pre></div>
+<p>In this deployment example the TTL is -1 by default which means it never expires and is not included in the response.</p>
+<div class="highlight"><pre><span></span><code>$ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/apikey/api/v1/auth/key&quot;
+{&quot;key_id&quot;:&quot;9c2d22fb-e28d-4495-aaae-d4103dada8d1&quot;,&quot;api_key&quot;:&quot;T1dNeVpESXlabUl0WlRJNFpDMDBORGsxTFdGaFlX....R1F4OjpNMlV5WXpFeE56a3RZbVJtTXkwME1HTTJMVGxoTmpVdE9HWXdNbUZrTTJWa016UXo=&quot;}
+</code></pre></div>
+<p><strong>API Key</strong> - The example below shows the interaction with the APIKey API via curl and the response.</p>
+<p>In this deployment example the TTL is set to 74000 ms which is translated to seconds in the response.</p>
+<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
+        &lt;role&gt;APIKEY&lt;/role&gt;
+        &lt;param&gt;
+            &lt;name&gt;apikey.knox.token.ttl&lt;/name&gt;
+            &lt;value&gt;74000&lt;/value&gt;
+        &lt;/param&gt;
+    &lt;/service&gt;&quot;
+
+$ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/apikey/api/v1/auth/key&quot;
+{&quot;key_id&quot;:&quot;9c2d22fb-e28d-4495-aaae-d4103dada8d1&quot;,&quot;api_key&quot;:&quot;T1dNeVpESXlabUl0WlRJNFpDMDBORGsxTFdGaFlX....R1F4OjpNMlV5WXpFeE56a3RZbVJtTXkwME1HTTJMVGxoTmpVdE9HWXdNbUZrTTJWa016UXo=&quot;,&quot;expires_in&quot;:74}
+</code></pre></div>
+<p>Note that in both of the above response that there is a key_id as well as the api_key. The api_key is intended to be used
+as the API Key via Authorization Bearer Token in the invocations of APIs.</p>
+<p>The key_id may be used in management operations of the API Key lifecycle by those with appropriate permissions to do so.</p>
+<h2 id="clientid-extension-of-knoxtoken-api">CLIENTID Extension of KnoxToken API<a class="headerlink" href="#clientid-extension-of-knoxtoken-api" title="Permanent link">&para;</a></h2>
+<h3 id="introduction_2">Introduction<a class="headerlink" href="#introduction_2" title="Permanent link">&para;</a></h3>
+<p>The CLIENTID API is an extension of the KnoxToken API that defaults certain configuration and translates the responses in
+a way that supports the specific OAuth Client Credentials Flow use cases. This API is used to issue API Keys for use with
+services like the Iceberg REST Catalog API.</p>
+<p>The only difference from the KnoxToken API in the configuration are the parameter names. They must be prefixed with
+"clientid." this is done to disambiguate the config from that of KnoxToken itself when they are colocated in the same
+topology.</p>
+<p>In addition, the default behavior differs in that the time-to-live or TTL defaults to "-1" which means that by default
+the API Keys do not expire. It also differs in that the returned APIKeys are Passcode tokens and as such are by definition
+server managed. Therefore, we default the server managed configuration to true for convenience and to reduce errors in
+deployment.</p>
+<p><strong>Client Credentials</strong> - The example below shows the interaction with the APIKey API via curl and the response with default behavior.</p>
+<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
+        &lt;role&gt;CLIENTID&lt;/role&gt;
+    &lt;/service&gt;&quot;
+</code></pre></div>
+<p>In this deployment example the TTL is -1 by default which means it never expires and is not included in the response.</p>
+<div class="highlight"><pre><span></span><code>$ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/clientid/api/v1/oauth/credentials&quot;
+{&quot;client_secret&quot;:&quot;WXpOa1l6SmxPRFF0TmpOalpTMDBPREZpTFRobE5qY3RO....jpOems1T1RabU5qSXROREl4T1MwMFlUVTBMV0UyWlRVdFptTXlNek0xTjJWaVl6SXg=&quot;,&quot;client_id&quot;:&quot;c3dc2e84-63ce-481b-8e67-75f754894f87&quot;}
+</code></pre></div>
+<p><strong>Client Credentials</strong> - The example below shows the interaction with the APIKey API via curl and the response.</p>
+<p>In this deployment example the TTL is set to 74000 ms which is translated to seconds in the response.</p>
+<div class="highlight"><pre><span></span><code>    &quot;&lt;service&gt;
+        &lt;role&gt;CLIENTID&lt;/role&gt;
+        &lt;param&gt;
+            &lt;name&gt;clientid.knox.token.ttl&lt;/name&gt;
+            &lt;value&gt;74000&lt;/value&gt;
+        &lt;/param&gt;
+    &lt;/service&gt;&quot;
+
+$ curl -ivku guest:guest-password -X POST &quot;https://localhost:8443/gateway/sandbox/clientid/api/v1/oauth/credentials&quot;
+{&quot;client_secret&quot;:&quot;WXpKaE1qRmlOR0V0TkRBMk5DMDBNelZsTFdFek16RXR....WTVaVFprOjpZelJsTlRJMFlXVXROMlEwTXkwME5EQTVMV0k1WWpJdFlqZ3pOR00xTmpsa01qUXg=&quot;,&quot;expires_in&quot;:74,&quot;client_id&quot;:&quot;c2a21b4a-4064-435e-a331-6d6858ef9e6d&quot;}
+</code></pre></div>
+<p>Note that in both of the above responses that there is a client_id and the client_secret.</p>
+<p>The key_id may be used in management operations of the API Key lifecycle by those with appropriate permissions to do so.</p>
 
 
 
