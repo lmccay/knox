@@ -28,6 +28,7 @@ import org.apache.knox.gateway.services.security.token.impl.JWTToken;
 import org.apache.knox.gateway.util.AuthFilterUtils;
 import org.apache.knox.gateway.util.CertificateUtils;
 import org.apache.knox.gateway.util.CookieUtils;
+import org.apache.knox.gateway.util.ServletRequestUtils;
 
 import javax.security.auth.Subject;
 import javax.servlet.FilterChain;
@@ -62,7 +63,7 @@ public class JWTFederationFilter extends AbstractJWTFilter {
   public static final String MISMATCHING_CLIENT_ID_AND_CLIENT_SECRET = "Client credentials flow with mismatching client_id and client_secret";
   public static final String REFRESH_TOKEN = "refresh_token";
   public static final String REFRESH_TOKEN_PARAM = "refresh_token";
-  public static final String TOKEN_EXCHANGE = "token_exchange";
+  public static final String TOKEN_EXCHANGE = "urn:ietf:params:oauth:grant-type:token-exchange";
   public static final String SUBJECT_TOKEN = "subject_token";
   public static final String CLIENT_ASSERTION_JWT_BEARER = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
   public static final String CLIENT_ASSERTION_TYPE = "client_assertion_type";
@@ -315,35 +316,40 @@ public class JWTFederationFilter extends AbstractJWTFilter {
     }
 
     private Pair<TokenType, String> getTokenFromRequestBody(ServletRequest request) {
-        final String grantType = request.getParameter(GRANT_TYPE);
-        final String clientAssertionType = request.getParameter(CLIENT_ASSERTION_TYPE);
+        // unwrap the servlet request so that we can get to the request body params since we are not passing this request
+        // on to other services to handle like we do when proxying. The request wrapper is protecting the body from being
+        // consumed before it gets to the proxied service that should handle it. We don't need that protection here.
+        HttpServletRequest unwrappedRequest = ServletRequestUtils.unwrapHttpServletRequest(request);
+        final String grantType = unwrappedRequest.getParameter(GRANT_TYPE);
+        final String clientAssertionType = unwrappedRequest.getParameter(CLIENT_ASSERTION_TYPE);
         if (CLIENT_CREDENTIALS.equals(grantType)) {
           if (clientAssertionType != null && CLIENT_ASSERTION_JWT_BEARER.equals(clientAssertionType)) {
             // short lived client assertion token expected
-            return getClientTokenFromParams(request, CLIENT_ASSERTION);
+            return getClientTokenFromParams(unwrappedRequest, CLIENT_ASSERTION);
           }
           // client credentials flow: client_id and client_secret are expected
           // the client_id will be in the token as the token_id
-          final String clientSecret = request.getParameter(CLIENT_SECRET);
-          validateClientID((HttpServletRequest) request, clientSecret);
+          final String clientSecret = unwrappedRequest.getParameter(CLIENT_SECRET);
+          validateClientID((HttpServletRequest) unwrappedRequest, clientSecret);
           return Pair.of(TokenType.Passcode, clientSecret);
         } else if (REFRESH_TOKEN.equals(grantType)) {
           // refresh_token flow: the refresh_token parameter contains the actual token
-          return getClientTokenFromParams(request, REFRESH_TOKEN_PARAM);
+          return getClientTokenFromParams(unwrappedRequest, REFRESH_TOKEN_PARAM);
         } else if (TOKEN_EXCHANGE.equals(grantType)) {
           // token_exchange flow: the subject_token parameter contains the token to be exchanged
-          return getClientTokenFromParams(request, SUBJECT_TOKEN);
+          return getClientTokenFromParams(unwrappedRequest, SUBJECT_TOKEN);
         }
       return null;
     }
 
-  private Pair<TokenType, String> getClientTokenFromParams(final ServletRequest request, final String requestParamName) {
-    final String refreshOrSubjectToken = request.getParameter(requestParamName);
-    if (refreshOrSubjectToken != null) {
-      return isJWT(refreshOrSubjectToken) ? Pair.of(TokenType.JWT, refreshOrSubjectToken) : Pair.of(TokenType.Passcode, refreshOrSubjectToken);
+    private Pair<TokenType, String> getClientTokenFromParams(final ServletRequest request, final String requestParamName) {
+      final String refreshOrSubjectToken = request.getParameter(requestParamName);
+      if (refreshOrSubjectToken != null) {
+        return isJWT(refreshOrSubjectToken) ? Pair.of(TokenType.JWT, refreshOrSubjectToken) : Pair.of(TokenType.Passcode,
+                refreshOrSubjectToken);
+      }
+      return null;
     }
-    return null;
-  }
 
     private Pair<TokenType, String> parseFromHTTPBasicCredentials(final String header, final ServletRequest request) {
       Pair<TokenType, String> parsed = null;

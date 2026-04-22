@@ -81,9 +81,6 @@ public class UrlEncodedFormRequest extends HttpServletRequestWrapper {
 
   @Override
   public String getParameter(String name) {
-    if(GRANT_TYPE.equals(name) || CLIENT_ID.equals(name) || CLIENT_SECRET.equals(name)) {
-      return super.getParameter(name);
-    }
     return queryParams.getValue(name, 0);
   }
 
