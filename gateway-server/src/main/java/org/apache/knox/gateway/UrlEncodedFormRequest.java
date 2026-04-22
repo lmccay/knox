@@ -29,10 +29,6 @@ import org.apache.knox.gateway.i18n.messages.MessagesFactory;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
-import static org.apache.knox.gateway.security.CommonTokenConstants.GRANT_TYPE;
-import static org.apache.knox.gateway.security.CommonTokenConstants.CLIENT_ID;
-import static org.apache.knox.gateway.security.CommonTokenConstants.CLIENT_SECRET;
-
 /**
  * HttpServletRequest
  *
