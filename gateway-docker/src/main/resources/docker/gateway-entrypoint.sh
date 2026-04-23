@@ -44,6 +44,7 @@ set -o pipefail
 ## Function takes cert file as argument
 importMultipleCerts() {
   FILE=$1
+  local import_failed=0
   ALIAS_PASSPHRASE=$(/bin/cat "${KEYSTORE_PASSWORD_FILE}")
   # number of certs in the PEM file
   CERTS=$(/bin/grep 'END CERTIFICATE' "$FILE"| /usr/bin/wc -l)
@@ -53,15 +54,26 @@ importMultipleCerts() {
   # step 2), increment counter when last line of cert is found
   for N in $(/usr/bin/seq 0 $((CERTS - 1))); do
     ALIAS="${FILE%.*}-$N"
-    /bin/cat "$FILE" |
+    # Make import idempotent across restarts when truststore is persisted.
+    keytool -delete \
+            -alias "$ALIAS" \
+            -keystore "${KEYSTORE_DIR}"/truststore.jks \
+            -storepass "$ALIAS_PASSPHRASE" \
+            > /dev/null 2>&1 || true
+    if ! /bin/cat "$FILE" |
       /usr/bin/awk "n==$N { print }; /END CERTIFICATE/ { n++ }" |
       keytool -import \
               -trustcacerts \
               -alias "$ALIAS" \
               -keystore "${KEYSTORE_DIR}"/truststore.jks \
               -storepass "$ALIAS_PASSPHRASE" \
-              -noprompt
+              -noprompt; then
+      echo "WARN: Unable to import certificate alias [${ALIAS}] from [${FILE}]. Continuing startup..."
+      import_failed=1
+    fi
   done
+
+  return "$import_failed"
 }
 
 ## Helper function to save an alias
@@ -86,7 +98,7 @@ export GATEWAY_SERVER_RUN_IN_FOREGROUND=true
 # Create Master secret
 if [[ -n ${KNOX_MASTER_SECRET} ]]
 then
-  MASTER_SECRET=$(/bin/cat "${KNOX_MASTER_SECRET}" 2>/dev/null)
+  MASTER_SECRET=$(/bin/cat "${KNOX_MASTER_SECRET}" 2> /dev/null)
 fi
 
 if [[ -n ${MASTER_SECRET} ]]
@@ -94,13 +106,13 @@ then
   echo "Using provided knox master secret [env:MASTER_SECRET]"
 else
   echo "Using default knox master secret"
-  MASTER_SECRET="knox"
+  MASTER_SECRET="!apacheknox!"
 fi
 /home/knox/knox/bin/knoxcli.sh create-master --master "${MASTER_SECRET}"
 
 if [[ -n ${LDAP_PASSWORD_FILE} ]]
 then
-  LDAP_BIND_PASSWORD=$(/bin/cat "${LDAP_PASSWORD_FILE}" 2>/dev/null)
+  LDAP_BIND_PASSWORD=$(/bin/cat "${LDAP_PASSWORD_FILE}" 2> /dev/null)
 fi
 
 saveAlias ldap-bind-password "${LDAP_BIND_PASSWORD}"
@@ -128,7 +140,7 @@ fi
 if [[ -n ${KEYSTORE_PASSWORD_FILE} ]] && [[ -f ${KEYSTORE_PASSWORD_FILE} ]]
 then
   echo "Using provided keystore password file"
-  ALIAS_PASSPHRASE=$(/bin/cat "${KEYSTORE_PASSWORD_FILE}" 2>/dev/null)
+  ALIAS_PASSPHRASE=$(/bin/cat "${KEYSTORE_PASSWORD_FILE}" 2> /dev/null)
 else
    # If keystore password is not provided use master secret as alias passphrase
    ALIAS_PASSPHRASE="${MASTER_SECRET}"
@@ -183,14 +195,18 @@ fi
 if [[ -n $CA_FILE ]] && [[ -f ${CA_FILE} ]]
 then
   echo "Creating truststore with provided CA certificate/s."
-  importMultipleCerts "$CA_FILE"
+  if ! importMultipleCerts "$CA_FILE"; then
+    echo "WARN: Unable to import CA certs from [${CA_FILE}]. Continuing startup..."
+  fi
 fi
 
 # Import custom certs one by one
 if [[ -n $CUSTOM_CERT ]] && [[ -f ${CUSTOM_CERT} ]]
 then
   echo "Importing Custom certs."
-  importMultipleCerts "$CUSTOM_CERT"
+  if ! importMultipleCerts "$CUSTOM_CERT"; then
+      echo "WARN: Unable to import custom certs from [${CUSTOM_CERT}]. Continuing startup..."
+    fi
 fi
 
 # This default was set to emulate the existing behaviour
@@ -201,8 +217,9 @@ then
 	 amazon-ca-1:/home/knox/cacrts/AmazonRootCA1.cer
      amazon-ca-2:/home/knox/cacrts/AmazonRootCA2.cer
      amazon-ca-3:/home/knox/cacrts/AmazonRootCA3.cer
-	 amazon-ca-4:/home/knox/cacrts/AmazonRootCA4.cer
-     letsencrypt-stg-root:/home/knox/cacrts/letsencrypt-stg-root-x1.pem"
+	   amazon-ca-4:/home/knox/cacrts/AmazonRootCA4.cer
+     isrgrootx1:/home/knox/cacrts/isrgrootx1.pem
+     isrgrootx2:/home/knox/cacrts/isrg-root-x2.pem"
 fi
 
 for certinfo in ${TRUSTSTORE_IMPORTS}
@@ -212,12 +229,18 @@ do
     if [[ -n "${aliasId}" ]] && [[ -n "${certPath}" ]] && [[ -f "${certPath}" ]]
     then
         echo "INFO: Importing certificate [${certPath}] into truststore"
+        # Replace existing alias to keep imports idempotent.
+        keytool -delete \
+            -keystore "${KEYSTORE_DIR}"/truststore.jks \
+            -alias "${aliasId}" \
+            -storepass "${ALIAS_PASSPHRASE}" \
+            > /dev/null 2>&1 || true
         keytool -importcert \
             -keystore "${KEYSTORE_DIR}"/truststore.jks \
             -alias "${aliasId}" \
             -file "${certPath}" \
             -storepass "${ALIAS_PASSPHRASE}" \
-            -noprompt || true
+            -noprompt || echo "WARN: Unable to import certificate [${certPath}] with alias [${aliasId}]. Continuing startup..."
     else
         echo "ERROR: certificate [${certinfo}] not found. Not importing into truststore"
     fi
