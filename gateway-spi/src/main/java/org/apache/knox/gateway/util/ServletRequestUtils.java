@@ -18,6 +18,7 @@
 package org.apache.knox.gateway.util;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -61,4 +62,14 @@ public class ServletRequestUtils {
     }
   }
 
+  /**
+   * Unwrap ServletRequest through wrapper chain to get underlying HttpServletRequest
+   */
+  public static HttpServletRequest unwrapHttpServletRequest(ServletRequest request) {
+    ServletRequest current = request;
+    while (current instanceof ServletRequestWrapper) {
+      current = ((ServletRequestWrapper) current).getRequest();
+    }
+    return (HttpServletRequest) current;
+  }
 }

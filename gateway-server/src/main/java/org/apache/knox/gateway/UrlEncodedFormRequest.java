@@ -29,10 +29,6 @@ import org.apache.knox.gateway.i18n.messages.MessagesFactory;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
-import static org.apache.knox.gateway.security.CommonTokenConstants.GRANT_TYPE;
-import static org.apache.knox.gateway.security.CommonTokenConstants.CLIENT_ID;
-import static org.apache.knox.gateway.security.CommonTokenConstants.CLIENT_SECRET;
-
 /**
  * HttpServletRequest
  *
@@ -81,9 +77,6 @@ public class UrlEncodedFormRequest extends HttpServletRequestWrapper {
 
   @Override
   public String getParameter(String name) {
-    if(GRANT_TYPE.equals(name) || CLIENT_ID.equals(name) || CLIENT_SECRET.equals(name)) {
-      return super.getParameter(name);
-    }
     return queryParams.getValue(name, 0);
   }
 
